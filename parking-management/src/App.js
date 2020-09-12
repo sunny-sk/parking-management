@@ -1,7 +1,16 @@
 import React from "react";
+import Signin from "./pages/Signin";
+import Initialize from "./pages/Initialize";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
-  return <div className="App"></div>;
+  return (
+    <>
+      {/* <Signin /> */}
+      <Dashboard />
+      {/* <Initialize /> */}
+    </>
+  );
 }
 
 export default App;

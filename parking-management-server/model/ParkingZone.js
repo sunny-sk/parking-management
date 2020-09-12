@@ -1,4 +1,7 @@
 const mongoose = require("mongoose");
+
+// schema for parking Zone
+
 const parkingZone = new mongoose.Schema(
   {
     parking_zone_title: {

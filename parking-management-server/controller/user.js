@@ -4,6 +4,12 @@ const User = require("../model/User");
 const crypto = require("crypto");
 const _ = require("lodash");
 
+/*
+
+//@desc    Instantiating initial user
+//@route   no route
+//@access  internal function
+*/
 module.exports.initiateInitialUser = async () => {
   try {
     const one = {
@@ -53,13 +59,32 @@ module.exports.initiateInitialUser = async () => {
   }
 };
 
-module.exports.signupUser = asyncHandler(async (req, res, next) => {});
+/*
+
+//@desc    Sign up user or register usser
+//@route   POST /api/v1/auth/signup
+//@access  public
+*/
+
+module.exports.signupUser = asyncHandler(async (req, res, next) => {
+  //TODO: impplement this functionality
+});
+
+/*
+
+//@desc    Sign in user or login usser
+//@route   POST /api/v1/auth/signin
+//@access  public
+*/
 
 module.exports.signinUser = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
+  //validating fields
   if (!email) return next(new ErrorResponse("please add email field", 400));
   if (!password)
     return next(new ErrorResponse("please add password field", 400));
+
+  // checking user existance
   const user = await User.findOne({ email: email });
   if (!user)
     return next(new ErrorResponse("user not registerd with this email", 404));
@@ -68,12 +93,16 @@ module.exports.signinUser = asyncHandler(async (req, res, next) => {
     .update(password)
     .digest("hex");
 
+  //matching password
   if (hashedPassword !== user.password)
     return next(new ErrorResponse("invalid email or password", 400));
 
+  //generating auth token
   const token = user.generateAuthToken();
   user.token = token;
+  //saving to db
   await user.save();
+  //sending response
   res.status(200).send({
     success: true,
     code: 200,

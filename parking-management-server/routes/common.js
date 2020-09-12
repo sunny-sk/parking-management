@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-var pdf = require("html-pdf");
+
 //importing controller methods
 const {
   initializeApp,
@@ -16,6 +16,7 @@ const { protect, authorize } = require("../middleware/auth");
 
 //routes
 router.get("/getReport", generatePdf);
+
 router.post(
   "/initalizeApp",
   protect,

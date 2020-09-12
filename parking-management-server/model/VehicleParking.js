@@ -1,4 +1,7 @@
 const mongoose = require("mongoose");
+
+// schema for vehicle parked
+
 const vehicleParking = new mongoose.Schema(
   {
     vehicle_registration_number: {

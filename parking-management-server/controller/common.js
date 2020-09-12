@@ -3,15 +3,20 @@ const ErrorResponse = require("../utils/errorResponse");
 const ParkingSpace = require("../model/ParkingSpace");
 const ParkingZone = require("../model/ParkingZone");
 const VehicleParking = require("../model/VehicleParking");
-var fs = require("fs");
 var path = require("path");
 var pdf = require("html-pdf");
+
+/*
+
+//@desc    initialize app
+//@route   POST /api/v1/common/initalizeApp
+//@access  Private/Booking_Counter_Agent
+*/
+
 module.exports.initializeApp = asyncHandler(async (req, res, next) => {
   let parkingZone = await ParkingZone.find();
   let parkingSpace = await ParkingSpace.find();
   if (parkingZone.length <= 0) {
-    // no parking zone available
-    console.log("creatingNew");
     parkingZone = await ParkingZone.insertMany([
       { parking_zone_title: "A" },
       { parking_zone_title: "B" },
@@ -62,6 +67,14 @@ module.exports.initializeApp = asyncHandler(async (req, res, next) => {
     parkingSpace,
   });
 });
+
+/*
+
+//@desc    get All parking zons
+//@route   GET /api/v1/common/parkingZones
+//@access  public 
+*/
+
 module.exports.getAllParkingZons = asyncHandler(async (req, res, next) => {
   let parkingZone = await ParkingZone.find().select("parking_zone_title");
   res.status(200).send({
@@ -71,6 +84,14 @@ module.exports.getAllParkingZons = asyncHandler(async (req, res, next) => {
     parkingZone,
   });
 });
+
+/*
+
+//@desc    get All parking spaces
+//@route   GET /api/v1/common/getAllParkingSpaces
+//@access  public 
+*/
+
 module.exports.getAllParkingSpaces = asyncHandler(async (req, res, next) => {
   let parkingSpace = await ParkingSpace.find()
     .populate("parking_zone_id", ["parking_zone_title"])
@@ -82,6 +103,7 @@ module.exports.getAllParkingSpaces = asyncHandler(async (req, res, next) => {
     parkingSpace,
   });
 });
+
 module.exports.getAllVehiclesParking = asyncHandler(async (req, res, next) => {
   let vehicleParking = await VehicleParking.find();
   res.status(200).send({
@@ -91,6 +113,13 @@ module.exports.getAllVehiclesParking = asyncHandler(async (req, res, next) => {
     vehicleParking,
   });
 });
+
+/*
+
+//@desc    book new parking
+//@route   POST /api/v1/common/book-new-parking
+//@access  Private/Booking_Counter_Agent
+*/
 
 module.exports.bookNewParking = asyncHandler(async (req, res, next) => {
   const {
@@ -131,6 +160,13 @@ module.exports.bookNewParking = asyncHandler(async (req, res, next) => {
   });
 });
 
+/*
+
+//@desc    release  parking
+//@route   DELETE /api/v1/common/release-parking/:vehicleId
+//@access  Private/Booking_Counter_Agent
+*/
+
 module.exports.releaseParking = asyncHandler(async (req, res, next) => {
   const { vehicleId } = req.params;
   if (!vehicleId)
@@ -148,6 +184,13 @@ module.exports.releaseParking = asyncHandler(async (req, res, next) => {
   );
   res.status(200).send({ success: true, code: 200, vehicle });
 });
+
+/*
+
+//@desc    generate report
+//@route   GET /api/v1/common/getReport
+//@access  Public
+*/
 
 module.exports.generatePdf = asyncHandler(async (req, res, next) => {
   let parkingSpace = await ParkingSpace.find()
@@ -233,7 +276,10 @@ module.exports.generatePdf = asyncHandler(async (req, res, next) => {
     .create(p, options)
     .toFile(path.join(__dirname, "../public/report.pdf"), function (err, res) {
       if (err) return console.log(err);
-      console.log(res); // { filename: '/app/businesscard.pdf' }
+      res.send({
+        success: true,
+        code: 200,
+        message: "report generated successfully",
+      });
     });
-  res.send(parkingSpace);
 });

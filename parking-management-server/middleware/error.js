@@ -8,7 +8,7 @@ const errorHandler = (err, req, res, next) => {
   };
   //
 
-  // console.log(err.name);
+  console.log(err.name);
   console.log(err);
 
   //token invalid
@@ -42,7 +42,7 @@ const errorHandler = (err, req, res, next) => {
   // mongo object Id error
   if (err.name === "CastError") {
     error.success = false;
-    error.code = 500;
+    error.code = 400;
     error.message = err.message;
   }
 

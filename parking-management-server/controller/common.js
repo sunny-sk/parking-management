@@ -3,7 +3,9 @@ const ErrorResponse = require("../utils/errorResponse");
 const ParkingSpace = require("../model/ParkingSpace");
 const ParkingZone = require("../model/ParkingZone");
 const VehicleParking = require("../model/VehicleParking");
-
+var fs = require("fs");
+var path = require("path");
+var pdf = require("html-pdf");
 module.exports.initializeApp = asyncHandler(async (req, res, next) => {
   let parkingZone = await ParkingZone.find();
   let parkingSpace = await ParkingSpace.find();
@@ -19,7 +21,7 @@ module.exports.initializeApp = asyncHandler(async (req, res, next) => {
     //do nothing
   }
   ////
-  console.log(parkingZone);
+
   const tempArray = [];
   for (let i = 1; i <= 30; i++) {
     let title = ``;
@@ -50,7 +52,12 @@ module.exports.initializeApp = asyncHandler(async (req, res, next) => {
     //do nothing
   }
 
+  await VehicleParking.deleteMany({});
+
   res.send({
+    success: true,
+    code: 200,
+    message: "Successfully initialize app",
     parkingZone,
     parkingSpace,
   });
@@ -73,6 +80,15 @@ module.exports.getAllParkingSpaces = asyncHandler(async (req, res, next) => {
     code: 200,
     count: parkingSpace.length,
     parkingSpace,
+  });
+});
+module.exports.getAllVehiclesParking = asyncHandler(async (req, res, next) => {
+  let vehicleParking = await VehicleParking.find();
+  res.status(200).send({
+    success: true,
+    code: 200,
+    count: vehicleParking.length,
+    vehicleParking,
   });
 });
 
@@ -114,14 +130,110 @@ module.exports.bookNewParking = asyncHandler(async (req, res, next) => {
     newParking,
   });
 });
+
 module.exports.releaseParking = asyncHandler(async (req, res, next) => {
   const { vehicleId } = req.params;
   if (!vehicleId)
     return next(new ErrorResponse("Please add Parking space id", 400));
-  const vehicle = await VehicleParking.findById(vehicleId);
+  let vehicle = await VehicleParking.findById(vehicleId);
   if (!vehicle) return next(new ErrorResponse("Vehicle Id not found", 404));
-  vehicle.parking_space_id = null;
-  vehicle.release_date_time = new Date();
-  await vehicle.updateOne();
+
+  vehicle = await VehicleParking.findByIdAndUpdate(
+    vehicle._id,
+    {
+      parking_space_id: null,
+      release_date_time: new Date(),
+    },
+    { new: true }
+  );
   res.status(200).send({ success: true, code: 200, vehicle });
+});
+
+module.exports.generatePdf = asyncHandler(async (req, res, next) => {
+  let parkingSpace = await ParkingSpace.find()
+    .populate("parking_zone_id", ["parking_zone_title"])
+    .populate("parked_vehicle");
+
+  let one = "";
+
+  const x = `${parkingSpace.map((e) => {
+    one += `<tr>
+        <td>${e.parking_zone_id.parking_zone_title}</td>
+        <td>${e.parking_space_title}</td>
+        <td>
+          ${
+            e.parked_vehicle.length > 0
+              ? e.parked_vehicle[0].vehicle_registration_number
+              : "-"
+          }
+        </td>
+        <td>${e.parked_vehicle.length > 0 ? "occupied" : "Vacent"}</td>
+        <td>
+          ${
+            e.parked_vehicle.length > 0
+              ? e.parked_vehicle[0].booking_date_time
+              : "-"
+          }
+        </td>
+        <td>
+          ${
+            e.parked_vehicle.length > 0 && e.parked_vehicle[0].release_date_time
+              ? e.parked_vehicle[0].booking_date_time
+              : "-"
+          }
+        </td>
+      </tr>`;
+  })}`;
+  const p = `<html>
+  <head>
+    <style>
+      table {
+        border-collapse: collapse;
+      }
+      table,
+      td {
+        text-align: center;
+        border: 1px solid black;
+      }
+      th {
+        color: white;
+        padding: 10px;
+        background-color: black;
+      }
+      td {
+        padding: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div style="width: 80%; margin-left: 10%">
+      <br />
+      <div style="text-align: center">
+        <h2>Parking Report</h2>
+      </div>
+      <br />
+      <table style="width: 100%">
+        <tr>
+          <th>Parking Zone</th>
+          <th>Parking Space</th>
+          <th>Vehicle Id</th>
+          <th>Availability</th>
+          <th>Booking date</th>
+          <th>Release Date</th>
+        </tr>
+        ${one}
+      </table>
+    </div>
+  </body>
+</html>
+`;
+
+  var options = { format: "Letter" };
+  pdf
+    .create(p, options)
+    .toFile(path.join(__dirname, "../public/report.pdf"), function (err, res) {
+      if (err) return console.log(err);
+      console.log(res); // { filename: '/app/businesscard.pdf' }
+    });
+  res.send(parkingSpace);
 });

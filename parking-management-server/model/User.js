@@ -17,6 +17,10 @@ const userSchema = new mongoose.Schema(
         "Please add a valid email",
       ],
     },
+    token: {
+      type: String,
+      default: null,
+    },
     userType: {
       type: String,
       required: [true, "Please add userType"],

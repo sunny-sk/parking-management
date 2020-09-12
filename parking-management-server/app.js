@@ -6,10 +6,12 @@ const cors = require("cors");
 const morgan = require("morgan");
 const dotenv = require("dotenv");
 const connctDB = require("./config/db");
+const path = require("path");
 const port = process.env.PORT || 8100;
 require("colors");
 //config files
 dotenv.config({ path: "./config/config.env" });
+app.use(express.static(path.join(__dirname, "public")));
 //setting middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -25,9 +27,12 @@ mongoose.set("useUnifiedTopology", true);
 //routes
 // app.use("/api/v1/users", user);
 const common = require("./routes/common");
+const user = require("./routes/user");
 const errorHandler = require("./middleware/error");
-
+const { initiateInitialUser } = require("./controller/user");
+initiateInitialUser();
 app.use("/api/v1/common", common);
+app.use("/api/v1/auth", user);
 app.use("/", (req, res, next) => {
   res.status(200).send({ success: true, message: "server up" });
 });

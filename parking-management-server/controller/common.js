@@ -65,9 +65,9 @@ module.exports.getAllParkingZons = asyncHandler(async (req, res, next) => {
   });
 });
 module.exports.getAllParkingSpaces = asyncHandler(async (req, res, next) => {
-  let parkingSpace = await ParkingSpace.find().populate("parking_zone_id", [
-    "parking_zone_title",
-  ]);
+  let parkingSpace = await ParkingSpace.find()
+    .populate("parking_zone_id", ["parking_zone_title"])
+    .populate("parked_vehicle");
   res.status(200).send({
     success: true,
     code: 200,

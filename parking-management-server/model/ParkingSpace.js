@@ -12,8 +12,15 @@ const parkingSpace = new mongoose.Schema(
       ref: "ParkingZone",
     },
   },
-  { timestamps: true }
+  { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
+
+parkingSpace.virtual("parked_vehicle", {
+  ref: "VehicleParking", // db name
+  localField: "_id",
+  foreignField: "parking_space_id",
+  justOne: false,
+});
 
 const ParkingSpace = mongoose.model("ParkingSpace", parkingSpace);
 

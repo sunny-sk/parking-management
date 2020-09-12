@@ -19,7 +19,7 @@ const Signin = () => {
           </div>
           <br />
           <br />
-          <div class="alert alert-danger" role="alert">
+          <div className="alert alert-danger" role="alert">
             This is a danger alert—check it out!
           </div>
           <div className="row">
@@ -35,25 +35,25 @@ const Signin = () => {
             <div className="col-sm-4">
               <br />
               <form>
-                <div class="form-group">
-                  <label for="exampleFormControlSelect1">
+                <div className="form-group">
+                  <label htmlFor="exampleFormControlSelect1">
                     Select User Type
                   </label>
-                  <select class="form-control">
+                  <select className="form-control">
                     <option>Booking Counter Agent</option>
                     <option>Parking Zone Assistant</option>
                   </select>
                 </div>
-                <div class="form-group mt-4">
-                  <label for="exampleInputPassword1">Password</label>
+                <div className="form-group mt-4">
+                  <label htmlFor="exampleInputPassword1">Password</label>
                   <input
                     type="password"
-                    class="form-control"
+                    className="form-control"
                     placeholder="Password"
                   />
                 </div>
-                <button class="btn btn-primary">Sign in</button>
-                <div class="lds-dual-ring"></div>
+                <button className="btn btn-primary">Sign in</button>
+                <div className="lds-dual-ring"></div>
               </form>
             </div>
           </div>

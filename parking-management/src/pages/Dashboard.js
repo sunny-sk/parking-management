@@ -1,21 +1,29 @@
 import React from "react";
 import Base from "../components/Base";
 
-const Dashboard = () => {
+const Dashboard = (props) => {
   return (
     <>
-      <Base>
+      <Base {...props}>
         <div className="container">
+          <div className="alert alert-danger" role="alert">
+            This is a danger alert—check it out!
+          </div>
           <div>
             <div style={{ display: "inline-block" }}>
-              <button className="btn btn-primary ">
-                Book Parking &nbsp; <i class="fas fa-parking"></i>
+              <button
+                className="btn btn-primary"
+                onClick={() => {
+                  props.history.push("/dashboard/book-parking");
+                }}
+              >
+                Book Parking &nbsp; <i className="fas fa-parking"></i>
               </button>
             </div>
             <div style={{ display: "inline-block", float: "right" }}>
-              <div class="lds-dual-ring  lds-dual-ring-loader"></div>
+              <div className="lds-dual-ring  lds-dual-ring-loader"></div>
               <button className="btn btn-primary ">
-                Downlaod Report &nbsp; <i class="fas fa-download"></i>
+                Downlaod Report &nbsp; <i className="fas fa-download"></i>
               </button>
             </div>
           </div>
@@ -26,7 +34,7 @@ const Dashboard = () => {
         <div className="container">
           <div>
             <form>
-              <div class="form-group row">
+              <div className="form-group row">
                 <label className="mt-1">Filter</label>
                 <div className="col-sm-3">
                   <select class="form-control">
@@ -39,8 +47,8 @@ const Dashboard = () => {
               </div>
             </form>
           </div>
-          <table class="table">
-            <thead class="thead-dark">
+          <table className="table">
+            <thead className="thead-dark">
               <tr>
                 <th scope="col">So. No.</th>
                 <th scope="col">PS Title</th>
@@ -54,12 +62,12 @@ const Dashboard = () => {
                 <th scope="row">1</th>
                 <td>A01</td>
                 <td>
-                  <span class="badge badge-success p-2">Occupied</span>
+                  <span className="badge badge-success p-2">Occupied</span>
                 </td>
                 <td>12345</td>
                 <td>
                   <button className="btn btn-danger btn-sm">
-                    Release Parking &nbsp; <i class="fas fa-trash-alt"></i>
+                    Release Parking &nbsp; <i className="fas fa-trash-alt"></i>
                   </button>
                 </td>
               </tr>
@@ -67,7 +75,7 @@ const Dashboard = () => {
                 <th scope="row">2</th>
                 <td>B01</td>
                 <td>
-                  <span class="badge badge-secondary p-2">Vacent</span>
+                  <span className="badge badge-secondary p-2">Vacent</span>
                 </td>
                 <td>-</td>
               </tr>

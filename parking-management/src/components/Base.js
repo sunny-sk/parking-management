@@ -1,10 +1,10 @@
 import React from "react";
 import Menu from "./Menu";
 
-const Base = ({ children }) => {
+const Base = ({ children, ...props }) => {
   return (
     <div>
-      <Menu />
+      <Menu {...props} />
       <br />
       {children}
     </div>

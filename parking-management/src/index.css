@@ -51,3 +51,23 @@ code {
   width: 30px;
   height: 30px;
 }
+
+.active {
+  color: blue !important;
+}
+
+.parking-slot {
+  cursor: pointer;
+  display: inline-block;
+  height: 30px;
+  width: 30px;
+  border: 1px solid #f6f6f6;
+  border-radius: 10px;
+  background: #f4f4f4;
+  margin: 10px;
+  text-align: center;
+}
+.selected-slot {
+  background-color: darkgreen !important;
+  color: white !important;
+}

@@ -1,15 +1,16 @@
 import React from "react";
+import { NavLink, Link } from "react-router-dom";
 
-const Menu = () => {
+const Menu = (props) => {
   return (
     <>
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container">
-          <a class="navbar-brand" href="#">
-            Navbar
-          </a>
+          <Link className="navbar-brand" to="/init">
+            PM
+          </Link>
           <button
-            class="navbar-toggler"
+            className="navbar-toggler"
             type="button"
             data-toggle="collapse"
             data-target="#navbarSupportedContent"
@@ -17,25 +18,25 @@ const Menu = () => {
             aria-expanded="false"
             aria-label="Toggle navigation"
           >
-            <span class="navbar-toggler-icon"></span>
+            <span className="navbar-toggler-icon"></span>
           </button>
 
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-              <li class="nav-item active">
-                <a class="nav-link" href="#">
+          <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul className="navbar-nav mr-auto">
+              <li className="nav-item">
+                <NavLink exact={true} className="nav-link" to="/init">
                   Initialize
-                </a>
+                </NavLink>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">
+              <li className="nav-item">
+                <NavLink exact={true} className="nav-link" to="/dashboard">
                   Dashboard
-                </a>
+                </NavLink>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">
+              <li className="nav-item">
+                <NavLink exact={true} className="nav-link" to="/signin">
                   Signin
-                </a>
+                </NavLink>
               </li>
             </ul>
           </div>

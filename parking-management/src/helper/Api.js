@@ -102,3 +102,16 @@ export const releaseParking = async (id) => {
     throw new Error(error);
   }
 };
+export const downloadReport = async () => {
+  try {
+    let result = await fetch(Url._getReport, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return result.json();
+  } catch (error) {
+    throw new Error(error);
+  }
+};

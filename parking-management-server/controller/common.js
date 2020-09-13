@@ -274,9 +274,13 @@ module.exports.generatePdf = asyncHandler(async (req, res, next) => {
   var options = { format: "Letter" };
   pdf
     .create(p, options)
-    .toFile(path.join(__dirname, "../public/report.pdf"), function (err, res) {
+    .toFile(path.join(__dirname, "../public/report.pdf"), function (
+      err,
+      result
+    ) {
       if (err) return console.log(err);
       res.send({
+        result: result,
         success: true,
         code: 200,
         message: "report generated successfully",

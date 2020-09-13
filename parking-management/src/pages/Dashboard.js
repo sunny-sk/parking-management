@@ -4,11 +4,14 @@ import {
   isAuthenticated,
   getAllParkingSpaces,
   releaseParking,
+  downloadReport,
 } from "../helper/Api";
 import { filterData } from "../helper/Utils";
 import TableRow from "../components/TableRow";
+import Url from "../helper/Url";
 const Dashboard = (props) => {
   const [isLoading, setIsLoading] = useState(true);
+  const [isReportLoading, setIsReportLoading] = useState(false);
   const [error, setError] = useState("");
   const [parkingSpaces, setParkingSpaces] = useState([]);
   const [filteredParkingSpaces, setFilterdParkingSpaces] = useState([]);
@@ -22,6 +25,20 @@ const Dashboard = (props) => {
   const onFilter = (filter) => {
     let newFilterData = filterData(parkingSpaces, filter);
     setFilterdParkingSpaces([...newFilterData]);
+  };
+
+  const onDownloadReport = async () => {
+    try {
+      setIsReportLoading(true);
+      const response = await downloadReport();
+      setIsReportLoading(false);
+      console.log(response);
+      if (response.success) {
+        window.open(Url._reportUrl, "_blank");
+      }
+    } catch (error) {
+      alert("something went wrong");
+    }
   };
 
   const load = async () => {
@@ -71,10 +88,20 @@ const Dashboard = (props) => {
               </div>
             )}
             <div style={{ display: "inline-block", float: "right" }}>
-              <div className="lds-dual-ring  lds-dual-ring-loader"></div>
-              <button className="btn btn-primary ">
-                Downlaod Report &nbsp; <i className="fas fa-download"></i>
-              </button>
+              {isReportLoading ? (
+                <>
+                  <div className="lds-dual-ring  lds-dual-ring-loader"></div>
+                </>
+              ) : (
+                <>
+                  <button
+                    onClick={onDownloadReport}
+                    className="btn btn-primary "
+                  >
+                    Downlaod Report &nbsp; <i className="fas fa-download"></i>
+                  </button>
+                </>
+              )}
             </div>
           </div>
           <br />

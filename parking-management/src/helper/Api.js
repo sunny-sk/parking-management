@@ -37,3 +37,19 @@ export const signinUser = async (data) => {
     throw new Error(error);
   }
 };
+export const initApp = async () => {
+  try {
+    const user = isAuthenticated();
+    let result = await fetch(Url._initApp, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": user.token,
+      },
+      body: JSON.stringify({}),
+    });
+    return result.json();
+  } catch (error) {
+    throw new Error(error);
+  }
+};

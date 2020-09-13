@@ -20,3 +20,20 @@ export const isAuthenticated = () => {
     return false;
   }
 };
+
+export const signinUser = async (data) => {
+  try {
+    let result = await fetch(Url._signin, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ...data,
+      }),
+    });
+    return result.json();
+  } catch (error) {
+    throw new Error(error);
+  }
+};

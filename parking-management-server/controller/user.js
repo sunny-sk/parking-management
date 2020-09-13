@@ -78,11 +78,12 @@ module.exports.signupUser = asyncHandler(async (req, res, next) => {
 */
 
 module.exports.signinUser = asyncHandler(async (req, res, next) => {
-  const { email, password } = req.body;
+  const { email, password, userType } = req.body;
   //validating fields
   if (!email) return next(new ErrorResponse("please add email field", 400));
   if (!password)
     return next(new ErrorResponse("please add password field", 400));
+  if (!userType) return next(new ErrorResponse("please add user type", 400));
 
   // checking user existance
   const user = await User.findOne({ email: email });

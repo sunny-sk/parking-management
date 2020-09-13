@@ -1,8 +1,14 @@
 import React from "react";
 import { NavLink, Link } from "react-router-dom";
-import { isAuthenticated } from "../helper/Api";
+import { isAuthenticated, logoutUser } from "../helper/Api";
 
-const Menu = (props) => {
+const Menu = () => {
+  const onSignOut = () => {
+    logoutUser(() => {
+      window.location.href = "/";
+    });
+  };
+
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -24,15 +30,16 @@ const Menu = (props) => {
 
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav mr-auto">
-              {isAuthenticated() && (
-                <li className="nav-item">
-                  <NavLink exact={true} className="nav-link" to="/init">
-                    Initialize
-                  </NavLink>
-                </li>
-              )}
+              {isAuthenticated() &&
+                isAuthenticated().userType === "Booking_Counter_Agent" && (
+                  <li className="nav-item">
+                    <NavLink exact={true} className="nav-link" to="/init">
+                      Initialize
+                    </NavLink>
+                  </li>
+                )}
               <li className="nav-item">
-                <NavLink exact={true} className="nav-link" to="/dashboard">
+                <NavLink className="nav-link" to="/dashboard">
                   Dashboard
                 </NavLink>
               </li>
@@ -41,6 +48,20 @@ const Menu = (props) => {
                   <NavLink exact={true} className="nav-link" to="/signin">
                     Signin
                   </NavLink>
+                </li>
+              )}
+            </ul>
+            <ul className="navbar-nav ml-auto">
+              {isAuthenticated() && (
+                <li className="nav-item">
+                  <button
+                    onClick={() => {
+                      onSignOut();
+                    }}
+                    className="btn btn-warning"
+                  >
+                    Signout
+                  </button>
                 </li>
               )}
             </ul>

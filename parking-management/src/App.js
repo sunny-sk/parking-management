@@ -12,11 +12,7 @@ function App(props) {
   return (
     <>
       <Switch>
-        <AuthGaurd
-          path="/dashboard/book-parking"
-          exact
-          component={BookParking}
-        />
+        <AuthGaurd path="/dashboard/book-parking" component={BookParking} />
         <AuthGaurd path="/dashboard" exact component={Dashboard} />
         <Route path="/signin" exact component={Signin} />
         <Route path="/not-found" component={NotFound} />

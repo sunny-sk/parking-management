@@ -23,6 +23,7 @@ const vehicleParking = new mongoose.Schema(
     booking_date_time: {
       type: Date,
       required: [true, "Please add booking_date_time"],
+      default: null,
     },
     release_date_time: {
       type: Date,

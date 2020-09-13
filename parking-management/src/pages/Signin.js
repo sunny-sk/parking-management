@@ -24,7 +24,6 @@ const Signin = ({ location, ...props }) => {
   const onSubmit = async (e) => {
     try {
       e.preventDefault();
-
       const payLoad = { userType, password, email };
       setisLoading(true);
       const response = await signinUser(payLoad);
@@ -41,7 +40,10 @@ const Signin = ({ location, ...props }) => {
           );
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+      alert("something went wrong try again later");
+    }
   };
   return (
     <>

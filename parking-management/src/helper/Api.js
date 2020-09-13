@@ -87,3 +87,18 @@ export const bookNewParking = async (data) => {
     throw new Error(error);
   }
 };
+export const releaseParking = async (id) => {
+  try {
+    const user = isAuthenticated();
+    let result = await fetch(Url._releaseParking + id, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": user.token,
+      },
+    });
+    return result.json();
+  } catch (error) {
+    throw new Error(error);
+  }
+};

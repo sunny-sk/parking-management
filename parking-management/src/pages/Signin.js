@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Base from "../components/Base";
 
-const Signin = () => {
+const Signin = ({ location }) => {
   const [isLoading, setisLoading] = useState(false);
   const [formData, setFormData] = useState({
     userType: "",

@@ -5,6 +5,7 @@ import Dashboard from "./pages/Dashboard";
 import { Switch, Route, Redirect } from "react-router-dom";
 import NotFound from "./pages/NotFound";
 import BookParking from "./pages/BookParking";
+import { AuthGaurd, ProtectedRoute } from "./auth/ProtectedRoute";
 
 function App(props) {
   return (
@@ -18,8 +19,12 @@ function App(props) {
             return <Initialize {...props} />;
           }}
         />
-        <Route path="/dashboard/book-parking" exact component={BookParking} />
-        <Route path="/dashboard" exact component={Dashboard} />
+        <AuthGaurd
+          path="/dashboard/book-parking"
+          exact
+          component={BookParking}
+        />
+        <AuthGaurd path="/dashboard" exact component={Dashboard} />
         <Route path="/signin" exact component={Signin} />
         <Route path="/not-found" component={NotFound} />
         <Route

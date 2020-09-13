@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import Base from "../components/Base";
 import { Redirect } from "react-router-dom";
+// importing api methods
 import { isAuthenticated, signinUser, authenticate } from "../helper/Api";
+import Loader from "../components/Loader";
+import Input from "../components/Input";
 const Signin = ({ location, ...props }) => {
   const [isLoading, setisLoading] = useState(false);
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({
     userType: "Booking_Counter_Agent",
-    password: "booking@123",
-    email: "bookingagent@gmail.com",
+    password: "",
+    email: "",
   });
   const { userType, password, email } = formData;
 
@@ -38,6 +41,8 @@ const Signin = ({ location, ...props }) => {
           displayError(
             "Invalid email address or password, Please check again "
           );
+        } else {
+          displayError(response.message);
         }
       }
     } catch (error) {
@@ -66,7 +71,7 @@ const Signin = ({ location, ...props }) => {
                 <img
                   src={require("../assets/parking.svg")}
                   className="img-fluid"
-                  alt=""
+                  alt="parking logo"
                 />
               </div>
             </div>
@@ -91,34 +96,26 @@ const Signin = ({ location, ...props }) => {
                     </option>
                   </select>
                 </div>
-                <div className="form-group mt-4">
-                  <label htmlFor="exampleInputPassword1">Enter Email</label>
-                  <input
-                    name="email"
-                    value={email}
-                    onChange={(e) => onChangeData(e)}
-                    required
-                    type="email"
-                    className="form-control"
-                    placeholder="Enter Email"
-                  />
-                  <small id="emailHelp" className="form-text text-muted">
-                    We'll never share your email with anyone else.
-                  </small>
-                </div>
-                <div className="form-group mt-4">
-                  <label htmlFor="exampleInputPassword1">Password</label>
-                  <input
-                    name="password"
-                    minLength="5"
-                    value={password}
-                    onChange={(e) => onChangeData(e)}
-                    required
-                    type="password"
-                    className="form-control"
-                    placeholder="Password"
-                  />
-                </div>
+                <Input
+                  title={"Enter Email"}
+                  name="email"
+                  value={email}
+                  onChange={(e) => onChangeData(e)}
+                  required={true}
+                  type="email"
+                  placeholder="Enter Email"
+                  info=" We'll never share your email with anyone else."
+                />
+                <Input
+                  title="Password"
+                  name="password"
+                  value={password}
+                  onChange={(e) => onChangeData(e)}
+                  required={true}
+                  type="password"
+                  minLength="5"
+                  placeholder="Password"
+                />
 
                 {!isLoading ? (
                   <div className="text-center">
@@ -127,9 +124,7 @@ const Signin = ({ location, ...props }) => {
                     </button>
                   </div>
                 ) : (
-                  <div className="text-center">
-                    <div className="lds-dual-ring"></div>
-                  </div>
+                  <Loader className="lds-dual-ring" />
                 )}
               </form>
             </div>

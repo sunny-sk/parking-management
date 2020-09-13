@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+
+//custom imports
 import Base from "../components/Base";
 import {
   isAuthenticated,
@@ -9,6 +12,7 @@ import {
 import { filterData } from "../helper/Utils";
 import TableRow from "../components/TableRow";
 import Url from "../helper/Url";
+import Loader from "../components/Loader";
 const Dashboard = (props) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isReportLoading, setIsReportLoading] = useState(false);
@@ -32,7 +36,6 @@ const Dashboard = (props) => {
       setIsReportLoading(true);
       const response = await downloadReport();
       setIsReportLoading(false);
-      console.log(response);
       if (response.success) {
         window.open(Url._reportUrl, "_blank");
       }
@@ -52,7 +55,9 @@ const Dashboard = (props) => {
         setParkingSpaces([...parkingSpace]);
         setFilterdParkingSpaces([...parkingSpace]);
       }
-    } catch (error) {}
+    } catch (error) {
+      alert("something went wrong, try again later");
+    }
   };
 
   const onReleaseParking = async (data) => {
@@ -63,7 +68,17 @@ const Dashboard = (props) => {
         load();
       } else {
       }
-    } catch (error) {}
+    } catch (error) {
+      alert("something went wrong, try again later");
+    }
+  };
+
+  const onBookParking = () => {
+    if (filteredParkingSpaces.length > 0) {
+      props.history.push("/dashboard/book-parking");
+    } else {
+      displayError("Please Initialize all data");
+    }
   };
 
   useEffect(() => {
@@ -74,15 +89,16 @@ const Dashboard = (props) => {
     <>
       <Base {...props}>
         <div className="container">
+          {error && (
+            <div className="alert alert-danger" role="alert">
+              {error}
+            </div>
+          )}
+          <br />
           <div>
             {isAuthenticated().userType === "Booking_Counter_Agent" && (
               <div style={{ display: "inline-block" }}>
-                <button
-                  className="btn btn-primary"
-                  onClick={() => {
-                    props.history.push("/dashboard/book-parking");
-                  }}
-                >
+                <button className="btn btn-primary" onClick={onBookParking}>
                   Book Parking &nbsp; <i className="fas fa-parking"></i>
                 </button>
               </div>
@@ -90,7 +106,7 @@ const Dashboard = (props) => {
             <div style={{ display: "inline-block", float: "right" }}>
               {isReportLoading ? (
                 <>
-                  <div className="lds-dual-ring  lds-dual-ring-loader"></div>
+                  <Loader className="lds-dual-ring lds-dual-ring-loader" />
                 </>
               ) : (
                 <>
@@ -114,61 +130,71 @@ const Dashboard = (props) => {
             <div className="container">
               <br />
               <br />
-              <div className="text-center">
-                <div className="text-center">
-                  <div className="lds-dual-ring"></div>
-                </div>
-              </div>
+              <Loader className="lds-dual-ring" />
             </div>
           </>
         ) : (
           <>
-            <div className="container">
-              <div>
-                <form>
-                  <div className="form-group row">
-                    <label className="mt-1">Filter</label>
-                    <div className="col-sm-3">
-                      <select
-                        onChange={(e) => {
-                          onFilter(e.target.value);
-                        }}
-                        className="form-control"
-                      >
-                        <option value="all">All Zones</option>
-                        <option value="A">Zone A</option>
-                        <option value="B">Zone B</option>
-                        <option value="C">Zone C</option>
-                      </select>
+            {filteredParkingSpaces.length > 0 ? (
+              <div className="container">
+                <div>
+                  <form>
+                    <div className="form-group row">
+                      <label className="mt-1">Filter</label>
+                      <div className="col-sm-3">
+                        <select
+                          onChange={(e) => {
+                            onFilter(e.target.value);
+                          }}
+                          className="form-control"
+                        >
+                          <option value="all">All Zones</option>
+                          <option value="A">Zone A</option>
+                          <option value="B">Zone B</option>
+                          <option value="C">Zone C</option>
+                        </select>
+                      </div>
                     </div>
-                  </div>
-                </form>
+                  </form>
+                </div>
+                <table className="table">
+                  <thead className="thead-dark">
+                    <tr>
+                      <th scope="col">So. No.</th>
+                      <th scope="col">PS Title</th>
+                      <th scope="col">Availability</th>
+                      <th scope="col">Vehicle</th>
+                      <th scope="col">Booking Date & Time </th>
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {filteredParkingSpaces.map((e, index) => {
+                      return (
+                        <TableRow
+                          data={e}
+                          index={index}
+                          onClick={onReleaseParking}
+                          key={index}
+                        />
+                      );
+                    })}
+                  </tbody>
+                </table>
               </div>
-              <table className="table">
-                <thead className="thead-dark">
-                  <tr>
-                    <th scope="col">So. No.</th>
-                    <th scope="col">PS Title</th>
-                    <th scope="col">Availability</th>
-                    <th scope="col">Vehicle</th>
-                    <th scope="col">Booking Date & Time </th>
-                    <th scope="col"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredParkingSpaces.map((e, index) => {
-                    return (
-                      <TableRow
-                        data={e}
-                        index={index}
-                        onClick={onReleaseParking}
-                        key={index}
-                      />
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
+            ) : (
+              <>
+                <div className="container text-center">
+                  <br />
+                  <b></b>
+                  <p className="lead">
+                    You haven't Initialize data, to Initialize data click below
+                  </p>
+                  <Link to="/init">click here to initialize</Link>
+                </div>
+              </>
+            )}
           </>
         )}
       </Base>

@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+// custom imports
 import Base from "../components/Base";
 import { initApp } from "../helper/Api";
+import Loader from "../components/Loader";
 
 const InitializeC = (props) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -27,6 +29,7 @@ const InitializeC = (props) => {
       }
     } catch (error) {
       console.log(error);
+      alert("something went wrong, try again later");
     }
   };
 
@@ -45,9 +48,7 @@ const InitializeC = (props) => {
             </div>
           )}
           {isLoading ? (
-            <div className="text-center">
-              <div className="lds-dual-ring"></div>
-            </div>
+            <Loader className="lds-dual-ring" />
           ) : (
             <div className="text-center">
               <br />

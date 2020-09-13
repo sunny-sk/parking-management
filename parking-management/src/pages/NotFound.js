@@ -1,6 +1,8 @@
 import React from "react";
 import Base from "../components/Base";
 
+// page not found
+
 const NotFound = () => {
   return (
     <Base>

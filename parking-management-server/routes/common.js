@@ -16,6 +16,9 @@ const { protect, authorize } = require("../middleware/auth");
 
 //routes
 router.get("/getReport", generatePdf);
+router.get("/parkingZones", getAllParkingZons);
+router.get("/getAllParkingSpaces", getAllParkingSpaces);
+router.get("/getAllVehiclesParking", getAllVehiclesParking);
 
 router.post(
   "/initalizeApp",
@@ -23,9 +26,6 @@ router.post(
   authorize("Booking_Counter_Agent"),
   initializeApp
 );
-router.get("/parkingZones", getAllParkingZons);
-router.get("/getAllParkingSpaces", getAllParkingSpaces);
-router.get("/getAllVehiclesParking", getAllVehiclesParking);
 router.post(
   "/book-new-parking",
   protect,

@@ -3,6 +3,10 @@ const asyncHandler = require("./asyncHandler");
 const User = require("../model/User");
 const ErrorResponse = require("../utils/errorResponse");
 
+/*
+//@desc    Protecting middleweres
+*/
+
 const protect = asyncHandler(async (req, res, next) => {
   const token = req.header("x-auth-token");
   if (!token) {
@@ -31,6 +35,10 @@ const protect = asyncHandler(async (req, res, next) => {
   req.user = user;
   next();
 });
+
+/*
+//@desc    authorizing  middleweres
+*/
 
 const authorize = (...roles) => {
   return (req, res, next) => {

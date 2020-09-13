@@ -1,5 +1,7 @@
 import Url from "./Url";
 
+//Please read the function name carefully. their working can be understand by their names
+
 export const _setLocalStorage = (key, value) => {
   if (Window !== "undefined") localStorage.setItem(key, JSON.stringify(value));
 };
@@ -102,6 +104,7 @@ export const releaseParking = async (id) => {
     throw new Error(error);
   }
 };
+
 export const downloadReport = async () => {
   try {
     let result = await fetch(Url._getReport, {

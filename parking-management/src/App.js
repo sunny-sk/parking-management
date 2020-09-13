@@ -1,18 +1,22 @@
 import React from "react";
+import { Switch, Route, Redirect } from "react-router-dom";
+
+// importing all pages
 import Signin from "./pages/Signin";
 import Dashboard from "./pages/Dashboard";
-import { Switch, Route, Redirect } from "react-router-dom";
 import NotFound from "./pages/NotFound";
 import BookParking from "./pages/BookParking";
-import AuthGaurd from "./auth/AuthGaurd";
-import Protect from "./auth/Protect";
 import Initialize from "./pages/Initialize";
 
-function App(props) {
+// importing auth gaurd
+import Protect from "./auth/Protect";
+import AuthGaurd from "./auth/AuthGaurd";
+
+function App() {
   return (
     <>
       <Switch>
-        <AuthGaurd path="/dashboard/book-parking" component={BookParking} />
+        <Protect path="/dashboard/book-parking" component={BookParking} />
         <AuthGaurd path="/dashboard" exact component={Dashboard} />
         <Route path="/signin" exact component={Signin} />
         <Route path="/not-found" component={NotFound} />

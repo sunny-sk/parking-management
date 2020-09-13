@@ -1,6 +1,8 @@
 import React, { useState, useEffect, Fragment } from "react";
 import Base from "../components/Base";
 import { getAllParkingSpaces, bookNewParking, logoutUser } from "../helper/Api";
+import Loader from "../components/Loader";
+import Input from "../components/Input";
 
 const BookParking = (props) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -53,16 +55,18 @@ const BookParking = (props) => {
         });
         props.history.goBack();
       } else {
-        if (response.code === 404) {
-        }
         if (response.code === 401) {
           displayError(response.message);
           logoutUser(() => {
             window.location.href = "/";
           });
+        } else {
+          displayError(response.message);
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      alert("something went wrong, try again later");
+    }
   };
 
   const selectSpace = (space) => {
@@ -85,7 +89,7 @@ const BookParking = (props) => {
           zoneB: [],
           zoneC: [],
         };
-        parkingSpace.map((e, index) => {
+        parkingSpace.forEach((e, index) => {
           if (e && e.parking_zone_id.parking_zone_title === "A") {
             temp.zoneA.push(e);
           } else if (e && e.parking_zone_id.parking_zone_title === "B") {
@@ -119,19 +123,16 @@ const BookParking = (props) => {
             </div>
           )}
           <form onSubmit={(e) => onSubmit(e)}>
-            <div className="form-group">
-              <label htmlFor="exampleInputEmail1">Vehicle Id</label>
-              <input
-                value={vehicleRegistrationNumber}
-                onChange={(e) => onChangeData(e)}
-                required
-                type="text"
-                name="vehicleRegistrationNumber"
-                className="form-control"
-                aria-describedby="emailHelp"
-                placeholder="Enter Vehicle Registration number"
-              />
-            </div>
+            <Input
+              title={"Vehicle Id"}
+              name="vehicleRegistrationNumber"
+              value={vehicleRegistrationNumber}
+              onChange={(e) => onChangeData(e)}
+              required={true}
+              type="text"
+              placeholder="Enter Vehicle Registration number"
+              info=" We'll never share your email with anyone else."
+            />
             <label>Available Parking zones</label>
             <div className="border rounded p-2">
               <div>
@@ -219,9 +220,7 @@ const BookParking = (props) => {
             <br />
             <br />
             {isLoading ? (
-              <div className="text-center">
-                <div className="lds-dual-ring"></div>
-              </div>
+              <Loader className="lds-dual-ring" />
             ) : (
               <div className="text-center">
                 <button type="submit" className="btn btn-primary">

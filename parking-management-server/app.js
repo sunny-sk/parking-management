@@ -16,6 +16,7 @@ app.use(express.static(path.join(__dirname, "public")));
 //setting middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+// setting cross-origin access
 app.use(cors());
 app.use(morgan("dev"));
 //Mongoose need variable set
@@ -59,5 +60,4 @@ process.on("unhandledRejection", (err, promise) => {
 });
 
 // exporting app for clustering if require
-
 module.exports = app;

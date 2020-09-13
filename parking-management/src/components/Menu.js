@@ -2,6 +2,8 @@ import React from "react";
 import { NavLink, Link } from "react-router-dom";
 import { isAuthenticated, logoutUser } from "../helper/Api";
 
+//NavBar
+
 const Menu = () => {
   const onSignOut = () => {
     logoutUser(() => {

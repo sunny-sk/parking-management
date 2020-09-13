@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Base from "../components/Base";
 import { initApp } from "../helper/Api";
 
-const Initialize = (props) => {
+const InitializeC = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -62,4 +62,4 @@ const Initialize = (props) => {
   );
 };
 
-export default Initialize;
+export default InitializeC;

@@ -26,12 +26,7 @@ const protect = asyncHandler(async (req, res, next) => {
   }
   // checking for validation
   if (user.token.toString() !== token.toString()) {
-    return next(
-      new ErrorResponse(
-        "invalid user id in token || token mismatch ||Access Denied => please login again",
-        401
-      )
-    );
+    return next(new ErrorResponse("Access Denied  please login again", 401));
   }
   req.user = user;
   next();

@@ -1,7 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import Base from "../components/Base";
 
 const Dashboard = (props) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [isReportLoading, setIsReportLoading] = useState(false);
+  const [error, setError] = useState("");
+  const displayError = (message, time = 2000) => {
+    setTimeout(() => {
+      setError("");
+    }, time);
+    setError(message);
+  };
   return (
     <>
       <Base {...props}>
@@ -37,7 +46,7 @@ const Dashboard = (props) => {
               <div className="form-group row">
                 <label className="mt-1">Filter</label>
                 <div className="col-sm-3">
-                  <select class="form-control">
+                  <select className="form-control">
                     <option>All</option>
                     <option>A01</option>
                     <option>B01</option>

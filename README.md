@@ -15,7 +15,7 @@
 
 ### Attachments
 
-    please find the related attachments in release section
+    please find the related attachments for postman api collection in release section
     https://github.com/sunny-sk/parking-management/releases/tag/v1.0
 
 </br>
@@ -45,7 +45,7 @@
     <li>open another cmd window in cloned project and navigate to the <b>parking-management-server </b>folder using command <br /> 
     <b> <i> cd parking-management-server </i> </b>
     </li>
-    <li>Now install all the dependencies using command <i>npm install or yarn install</i></li>
+    <li>Now install all the dependencies using command <b> <i>npm install or yarn install</i></b></li>
     <span>(Note <sup>*</sup> if something goes wrong try again to install depenecies)</span>
     <li>Now run command to run<b><i>npm start or yarn start</i></b></li>
     <li>Node server is started on <b><i>localhost:8100</i></b></li>
